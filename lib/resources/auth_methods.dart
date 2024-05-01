@@ -3,12 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:zoom_clone/utils/utils.dart';
 
 class FirebaseAuthMethods {
-  final FirebaseAuth _auth;
-  FirebaseAuthMethods(this._auth);
+  final FirebaseAuth _auth=FirebaseAuth.instance;
 
   User get user => _auth.currentUser!;
 
-  Stream<User?> get authState => FirebaseAuth.instance.authStateChanges();
+  Stream<User?> get authState => _auth.authStateChanges();
 
   Future<void> signUpWithEmail({
     required String email,

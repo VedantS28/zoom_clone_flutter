@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:zoom_clone/resources/auth_methods.dart';
-import 'package:zoom_clone/utils/customtextfield.dart';
+import 'package:zoom_clone/widgets/customtextfield.dart';
 import 'package:zoom_clone/widgets/custom_button.dart';
 
 class SignUp extends StatefulWidget {
@@ -17,7 +17,7 @@ class _SignUpState extends State<SignUp> {
   TextEditingController passwordController = TextEditingController();
 
   void signUp() async {
-    FirebaseAuthMethods(FirebaseAuth.instance).signUpWithEmail(
+    FirebaseAuthMethods().signUpWithEmail(
         email: emailController.text,
         password: passwordController.text,
         context: context);
