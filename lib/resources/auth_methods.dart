@@ -1,39 +1,69 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:zoom_clone/utils/utils.dart';
 
-class AuthMethods {
-  final FirebaseAuth _auth =FirebaseAuth.instance;
-  final FirebaseFirestore _firestore =FirebaseFirestore.instance;
+class FirebaseAuthMethods {
+  final FirebaseAuth _auth;
+  FirebaseAuthMethods(this._auth);
 
-  Future<bool> signInWithGoogle(BuildContext context) async {
-    bool res=false;
+
+  User get user => _auth.currentUser!;
+
+  // STATE PERSISTENCE STREAM
+  Stream<User?> get authState => FirebaseAuth.instance.authStateChanges();
+
+
+  // EMAIL SIGN UP
+  Future<void> signUpWithEmail({
+    required String email,
+    required String password,
+    required BuildContext context,
+  }) async {
     try {
-      final GoogleSignInAccount? googleUser= await GoogleSignIn().signIn();
-      
-      final GoogleSignInAuthentication? googleAuth=await googleUser?.authentication;
-      final credential= GoogleAuthProvider.credential(accessToken: googleAuth?.accessToken,
-      idToken: googleAuth?.idToken);
-
-      UserCredential userCredential=await _auth.signInWithCredential(credential);
-
-      User? user =userCredential.user;
-      if(user!=null)
-      {
-        await _firestore.collection("users").doc(user.uid).set({
-            "username":user.displayName,
-            "uid":user.uid,
-            "profilePhotp":user.photoURL,
-        });
-      }
-      return res=true;
+      await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      await sendEmailVerification(context);
     } on FirebaseAuthException catch (e) {
-      showSnackBar(context, e.message!);
-      print(e.toString());
-      return res;
+      // if you want to display your own custom error message
+      if (e.code == 'weak-password') {
+        print('The password provided is too weak.');
+      } else if (e.code == 'email-already-in-use') {
+        print('The account already exists for that email.');
+      }
+      showSnackBar(
+          context, e.message!); // Displaying the usual firebase error message
+    }
+  }
+  // EMAIL LOGIN
+  Future<void> loginWithEmail({
+    required String email,
+    required String password,
+    required BuildContext context,
+  }) async {
+    try {
+      await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      if (!user.emailVerified) {
+        await sendEmailVerification(context);
+        // restrict access to certain things using provider
+        // transition to another page instead of home screen
+      }
+    } on FirebaseAuthException catch (e) {
+      showSnackBar(context, e.message!); // Displaying the error message
     }
   }
 
+  // EMAIL VERIFICATION
+  Future<void> sendEmailVerification(BuildContext context) async {
+    try {
+      _auth.currentUser!.sendEmailVerification();
+      showSnackBar(context, 'Email verification sent!');
+    } on FirebaseAuthException catch (e) {
+      showSnackBar(context, e.message!); // Display error message
+    }
+  }
 }

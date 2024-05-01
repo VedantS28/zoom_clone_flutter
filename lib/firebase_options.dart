@@ -70,6 +70,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '67732365698',
     projectId: 'zoom-clone-5ab3c',
     storageBucket: 'zoom-clone-5ab3c.appspot.com',
+    iosClientId: '67732365698-i1esv4v84ej2okg8u6aa4e0k073pgnbk.apps.googleusercontent.com',
     iosBundleId: 'com.example.zoomClone',
   );
+
 }

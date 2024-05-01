@@ -12,7 +12,12 @@
           "package_name": "com.example.zoom_clone"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "67732365698-ej92nhhanq4ejlj6l42v672bim4bkshh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCWS_5GlsZmdXzOTBvJwZUPfTpOxsnMoxk"
@@ -20,7 +25,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "67732365698-ej92nhhanq4ejlj6l42v672bim4bkshh.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "67732365698-i1esv4v84ej2okg8u6aa4e0k073pgnbk.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.zoomClone"
+              }
+            }
+          ]
         }
       }
     }

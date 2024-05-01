@@ -11,7 +11,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final AuthMethods _authMethod=AuthMethods();
+  // final AuthMethods _authMethod = AuthMethods();
 
   @override
   Widget build(BuildContext context) {
@@ -29,14 +29,16 @@ class _LoginScreenState extends State<LoginScreen> {
             padding: const EdgeInsets.symmetric(vertical: 38),
             child: Image.asset("assets/images/login.jpg"),
           ),
-          CustomButton(text: "Login with google",onPressed: ()async
-          {
-            bool res=await _authMethod.signInWithGoogle(context);
-            if(res)
-            {
-              Navigator.pushNamed(context, "/home");
-            }
-          },),
+          CustomButton(
+            text: "Login with google",
+            onPressed: () {},
+          ),
+          CustomButton(
+            text: "Login with Credentials",
+            onPressed: () {
+              Navigator.pushNamed(context, "/signup");
+            },
+          ),
         ],
       ),
     ));
